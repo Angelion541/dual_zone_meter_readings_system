@@ -10,9 +10,8 @@ export const Page = () => {
   const [paymentBill, setPaymentBill] = useState(null);
   const [warningData, setWarningData] = useState({ flag: false });
 
-  const updateMeterHandler = (meterId, newDay, newNight) => {
-    const paymentBill = updateMeter(meterId, newDay, newNight, setWarningData);
-    setPaymentBill(paymentBill);
+  const updateMeterHandler = async (meterId, newDay, newNight) => {
+    await updateMeter(meterId, newDay, newNight, setWarningData, setPaymentBill);
   }
 
   return (
@@ -52,7 +51,14 @@ export const Page = () => {
           {'Розрахувати'}
         </Button>
       </Card>
-      {paymentBill !== null && <h3>{<><p>Лічильник: {paymentBill.meterId}</p><p>Рахунок: {paymentBill.bill} грн</p></>}</h3>}
+      {paymentBill && (
+        <h3>
+          {<>
+            <p>Лічильник: {paymentBill?.meterId}</p>
+            <p>Рахунок: {paymentBill?.bill} грн</p>
+          </>}
+        </h3>
+      )}
       {warningData.flag && <CorrectionModal data={warningData} />}
     </Layout>
   )
